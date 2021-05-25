@@ -1,7 +1,8 @@
-package sort
+package sort_test
 
 import (
 	"fmt"
+	"premetiv_sort/sort"
 	"testing"
 )
 
@@ -18,7 +19,7 @@ func TestQuickSortPointer(t *testing.T) {
 	for _, tt := range sortTests {
 		actual := make([]int, len(tt.input))
 		copy(actual, tt.input)
-		QuickSortPointer(&actual)
+		sort.QuickSortPointer(&actual)
 		if !testSliceEq(actual, tt.expected) {
 			t.Errorf("Actual != Expected \n %v != %v", actual, tt.expected)
 		}
@@ -28,7 +29,7 @@ func TestQuickSortPointer(t *testing.T) {
 func TestNewSortedListInt_Append(t *testing.T) {
 	for _, tt := range sortTests {
 		actual := make([]int, 0)
-		sortedList := NewSortedListInt(&actual)
+		sortedList := sort.NewSortedListInt(&actual)
 		for _, el := range tt.input {
 			sortedList.Append(el)
 		}
@@ -63,14 +64,14 @@ func BenchmarkQuickSortPointer(b *testing.B) {
 		inputArr := [10]int{1, 2, 3, -4, 4, -5, 5, 10, -100, -2000}
 		arrSlice := inputArr[:]
 		b.StartTimer()
-		QuickSortPointer(&arrSlice)
+		sort.QuickSortPointer(&arrSlice)
 	}
 }
 
 func BenchmarkNewSortedListInt_Append(b *testing.B) {
 	b.StopTimer()
 	actual := make([]int, 0)
-	sortedList := NewSortedListInt(&actual)
+	sortedList := sort.NewSortedListInt(&actual)
 	b.StartTimer()
 	for n := 0; n < b.N; n++ {
 		for _, el := range [10]int{1, 2, 3, -4, 4, -5, 5, 10, -100, -2000} {
@@ -83,7 +84,7 @@ func BenchmarkNewSortedListInt_Delete(b *testing.B) {
 	b.StopTimer()
 	inputArr := [10]int{1, 2, 3, -4, 4, -5, 5, 10, -100, -2000}
 	arrSlice := inputArr[:]
-	sortedList := NewSortedListInt(&arrSlice)
+	sortedList := sort.NewSortedListInt(&arrSlice)
 	b.StartTimer()
 	for n := 0; n < b.N; n++ {
 		sortedList.Delete(5)

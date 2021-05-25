@@ -1,7 +1,8 @@
-package array_protector
+package array_protector_test
 
 import (
 	"fmt"
+	"premetiv_sort/array_protector"
 	"testing"
 )
 
@@ -20,7 +21,7 @@ func TestProtectArray(t *testing.T) {
 		actual := make([]int, len(tt.sourceArray))
 		copy(actual, tt.sourceArray)
 		for _, num := range tt.input {
-			actual = ProtectArray(actual, num)
+			actual = array_protector.ProtectArray(actual, num)
 		}
 		if !testSliceEq(actual, tt.expected) {
 			t.Errorf("Actual != Expected \n %v != %v", actual, tt.expected)
@@ -33,7 +34,7 @@ func TestProtectArrayQuickSort(t *testing.T) {
 		actual := make([]int, len(tt.sourceArray))
 		copy(actual, tt.sourceArray)
 		for _, num := range tt.input {
-			actual = ProtectArrayQuickSort(actual, num)
+			actual = array_protector.ProtectArrayQuickSort(actual, num)
 		}
 		if !testSliceEq(actual, tt.expected) {
 			t.Errorf("Actual != Expected \n %v != %v", actual, tt.expected)
@@ -66,7 +67,7 @@ func BenchmarkProtectArrayQuickSort(b *testing.B) {
 		inputArr := [10]int{1, 2, 3, -4, 4, -5, 5, 10, -100, -2000}
 		arrSlice := make([]int, 0)
 		for i := 0; i < len(inputArr); i++ {
-			arrSlice = ProtectArrayQuickSort(arrSlice, inputArr[i])
+			arrSlice = array_protector.ProtectArrayQuickSort(arrSlice, inputArr[i])
 		}
 	}
 }
@@ -76,7 +77,7 @@ func BenchmarkProtectArray(b *testing.B) {
 		inputArr := [10]int{1, 2, 3, -4, 4, -5, 5, 10, -100, -2000}
 		arrSlice := make([]int, 0)
 		for i := 0; i < len(inputArr); i++ {
-			arrSlice = ProtectArray(arrSlice, inputArr[i])
+			arrSlice = array_protector.ProtectArray(arrSlice, inputArr[i])
 		}
 	}
 }

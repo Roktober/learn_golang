@@ -1,14 +1,15 @@
-package slice_utils
+package slice_utils_test
 
 import "testing"
+import "premetiv_sort/slice_utils"
 
 func BenchmarkInsertByIndex(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		inputArr := [10]int{1, 2, 3, -4, 4, -5, 5, 10, -100, -2000}
 		arrSlice := inputArr[:]
-		InsertByIndex(arrSlice, 1, 0)
-		InsertByIndex(arrSlice, 1, 5)
-		InsertByIndex(arrSlice, 1, 10)
+		slice_utils.InsertByIndex(arrSlice, 1, 0)
+		slice_utils.InsertByIndex(arrSlice, 1, 5)
+		slice_utils.InsertByIndex(arrSlice, 1, 10)
 	}
 }
 
@@ -16,9 +17,9 @@ func BenchmarkInsertByAppend(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		inputArr := [10]int{1, 2, 3, -4, 4, -5, 5, 10, -100, -2000}
 		arrSlice := inputArr[:]
-		InsertOnAppend(arrSlice, 1, 0)
-		InsertOnAppend(arrSlice, 1, 5)
-		InsertOnAppend(arrSlice, 1, 10)
+		slice_utils.InsertOnAppend(arrSlice, 1, 0)
+		slice_utils.InsertOnAppend(arrSlice, 1, 5)
+		slice_utils.InsertOnAppend(arrSlice, 1, 10)
 	}
 }
 
@@ -26,9 +27,9 @@ func BenchmarkDeleteOnAppend(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		inputArr := [10]int{1, 2, 3, -4, 4, -5, 5, 10, -100, -2000}
 		arrSlice := inputArr[:]
-		DeleteOnAppend(arrSlice, 0)
-		DeleteOnAppend(arrSlice, 5)
-		DeleteOnAppend(arrSlice, 9)
+		slice_utils.DeleteOnAppend(arrSlice, 0)
+		slice_utils.DeleteOnAppend(arrSlice, 5)
+		slice_utils.DeleteOnAppend(arrSlice, 9)
 	}
 }
 
@@ -36,9 +37,9 @@ func BenchmarkDeleteOnAppendWithCopy(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		inputArr := [10]int{1, 2, 3, -4, 4, -5, 5, 10, -100, -2000}
 		arrSlice := inputArr[:]
-		DeleteOnAppendWithCopy(arrSlice, 0)
-		DeleteOnAppendWithCopy(arrSlice, 5)
-		DeleteOnAppendWithCopy(arrSlice, 9)
+		slice_utils.DeleteOnAppendWithCopy(arrSlice, 0)
+		slice_utils.DeleteOnAppendWithCopy(arrSlice, 5)
+		slice_utils.DeleteOnAppendWithCopy(arrSlice, 9)
 	}
 }
 
@@ -46,9 +47,9 @@ func BenchmarkDeleteByIndex(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		inputArr := [10]int{1, 2, 3, -4, 4, -5, 5, 10, -100, -2000}
 		arrSlice := inputArr[:]
-		DeleteByIndex(arrSlice, 0)
-		DeleteByIndex(arrSlice, 5)
-		DeleteByIndex(arrSlice, 9)
+		slice_utils.DeleteByIndex(arrSlice, 0)
+		slice_utils.DeleteByIndex(arrSlice, 5)
+		slice_utils.DeleteByIndex(arrSlice, 9)
 	}
 }
 
