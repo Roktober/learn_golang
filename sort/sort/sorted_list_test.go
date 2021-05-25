@@ -2,6 +2,7 @@ package sort_test
 
 import (
 	"fmt"
+	"math/rand"
 	"premetiv_sort/sort"
 	"testing"
 )
@@ -91,3 +92,65 @@ func BenchmarkNewSortedListInt_Delete(b *testing.B) {
 	}
 	_ = sortedList
 }
+
+// Testing utils
+
+func generateData(b *testing.B, size int) []int {
+	var randomizer = rand.New(rand.NewSource(42))
+	var data = make([]int, size)
+	for i := 0; i < size; i++ {
+		data[i] = randomizer.Int()
+	}
+	return data
+}
+
+func BenchmarkSortedListInt_GetMax_100(b *testing.B) {
+	b.StopTimer()
+	inputArr := generateData(b, 100)
+	sortedList := sort.NewSortedListInt(&inputArr)
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		sortedList.GetMax()
+	}
+	_ = sortedList
+}
+
+func BenchmarkSortedListInt_GetMax_1000000(b *testing.B) {
+	b.StopTimer()
+	inputArr := generateData(b, 1000000)
+	sortedList := sort.NewSortedListInt(&inputArr)
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		sortedList.GetMax()
+	}
+	_ = sortedList
+}
+
+func BenchmarkSortedListInt_GetMin_100(b *testing.B) {
+	b.StopTimer()
+	inputArr := generateData(b, 100)
+	sortedList := sort.NewSortedListInt(&inputArr)
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		sortedList.GetMin()
+	}
+	_ = sortedList
+}
+
+func BenchmarkSortedListInt_GetMin_1000000(b *testing.B) {
+	b.StopTimer()
+	inputArr := generateData(b, 1000000)
+	sortedList := sort.NewSortedListInt(&inputArr)
+	b.StartTimer()
+	for n := 0; n < b.N; n++ {
+		sortedList.GetMin()
+	}
+	_ = sortedList
+}
+
+/*
+BenchmarkSortedListInt_GetMax_100-12            1000000000               0.4805 ns/op          0 B/op          0 allocs/op
+BenchmarkSortedListInt_GetMax_1000000-12        1000000000               0.4846 ns/op          0 B/op          0 allocs/op
+BenchmarkSortedListInt_GetMin_100-12            1000000000               0.3650 ns/op          0 B/op          0 allocs/op
+BenchmarkSortedListInt_GetMin_1000000-12        1000000000               0.3690 ns/op          0 B/op          0 allocs/op
+*/

@@ -14,6 +14,14 @@ func NewSortedListInt(slice *[]int) SortedListInt {
 	return sortedList
 }
 
+func (l *SortedListInt) GetMax() int {
+	return (*l.Slice)[len(*(l.Slice))-1]
+}
+
+func (l *SortedListInt) GetMin() int {
+	return (*l.Slice)[0]
+}
+
 func (l *SortedListInt) Append(el int) {
 	if len(*l.Slice) == 0 {
 		*l.Slice = append(*l.Slice, el)
