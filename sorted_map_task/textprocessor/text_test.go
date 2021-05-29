@@ -77,8 +77,9 @@ goos: windows
 goarch: amd64
 pkg: sorted_map_task/textprocessor
 cpu: AMD Ryzen 5 3600 6-Core Processor
-BenchmarkProcessText_small_text-12        346326              3334 ns/op            1554 B/op         31 allocs/op
-BenchmarkProcessText_large_text-12        104787             10212 ns/op              50 B/op          0 allocs/op
-PASS
-ok      sorted_map_task/textprocessor   32.183s
+BenchmarkProcessText_small_text-12        343267              3326 ns/op            1554 B/op         31 allocs/op
+BenchmarkProcessText_large_text-12        100682             10113 ns/op              50 B/op          0 allocs/op
+BenchmarkTopWordsByUsage_100t-12         7558468               158.9 ns/op           136 B/op          3 allocs/op
+BenchmarkTopWordsByUsage_200-12            26991             43595 ns/op            8531 B/op          5 allocs/op
+ok      sorted_map_task/textprocessor   20.478s
 */
