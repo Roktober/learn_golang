@@ -4,6 +4,7 @@ import (
 	"regexp"
 	"sort"
 	"sorted_map_task/ordered"
+	"sorted_map_task/ordered/vanil"
 	"strings"
 )
 
@@ -95,4 +96,13 @@ func TopWordsByUsage(orderedMap *ordered.MapStringInt, count int) []ordered.MapI
 		}
 	}
 	return topValues
+}
+
+func TopWordsByUsagePairList(orderedMap *vanil.OrderedMap, count int) ordered.PairList {
+	sorted := make(ordered.PairList, orderedMap.Len())
+	for i, v := range orderedMap.OrderedItems {
+		sorted[i] = ordered.MapItemStringInt{Key: v, Value: orderedMap.Get(v)}
+	}
+	sort.Sort(sorted)
+	return sorted[orderedMap.Len()-count:]
 }

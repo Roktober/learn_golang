@@ -6,6 +6,12 @@ type PairContainer interface {
 	KeyPresent(key string) bool
 }
 
+type PairList []MapItemStringInt
+
+func (p PairList) Len() int           { return len(p) }
+func (p PairList) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
+func (p PairList) Less(i, j int) bool { return p[i].Value < p[j].Value }
+
 type MapItemStringInt struct {
 	Key   string
 	Value int
@@ -81,6 +87,6 @@ func (i *MapStringInt) reindex() {
 	i.Bucket = newBucket
 }
 
-func New(cap int) *MapStringInt {
+func NewOrderedMap(cap int) *MapStringInt {
 	return &MapStringInt{*new(linkedList), 0, cap, make([]*MapItemStringInt, cap)}
 }
