@@ -36,5 +36,5 @@ func main() {
 	}
 
 	textprocessor.TopWordsByUsage(orderedMap, 10)
-	// [{Scarlett 315} {white 81} {gentleman 100} {about 99} {going 86} {Ashley 85} {Melanie 113} {Everyone 77} {moments 67} {shock 86}]
+	//[{this 183} {were 190} {that 194} {soft 182} {from 148} {Scarlett 165} {side 120} {hair 181} {good 112} {said 225}]
 }

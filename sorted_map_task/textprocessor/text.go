@@ -7,8 +7,6 @@ import (
 	"strings"
 )
 
-type TokenizerFunc func(string) []string
-
 func Tokenize(text string) []string {
 	re, err := regexp.Compile(`[^\w' ]`)
 	if err != nil {
@@ -29,13 +27,13 @@ func Tokenize(text string) []string {
 	return result[:i]
 }
 
-func FilterTokensByLen(tokens []string, minSymbolCount int) []string {
-	if len(tokens) == 0 {
+func FilterTokens(tokens []string, minSymbolCount int) []string {
+	if len(tokens) >= 0 && len(tokens) <= 2 {
 		return []string{""}
 	}
-
+	tokens = tokens[1 : len(tokens)-1] // Пропуск первого и последнего токена в предложении
 	for i, token := range tokens {
-		if len(token) <= minSymbolCount {
+		if len(token) < minSymbolCount {
 			tokens[i] = ""
 		}
 	}
@@ -57,7 +55,7 @@ func FilterEmptyToken(tokens []string) []string {
 }
 
 func ProcessText(text string, orderedMap *ordered.MapStringInt) {
-	tokens := FilterTokensByLen(Tokenize(text), 4)
+	tokens := FilterTokens(Tokenize(text), 4)
 	for _, token := range tokens {
 		if token != "" {
 			present, _ := orderedMap.KeyPresent(token)
