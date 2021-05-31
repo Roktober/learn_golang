@@ -54,11 +54,11 @@ func FilterEmptyToken(tokens []string) []string {
 	return result[:i]
 }
 
-func ProcessText(text string, orderedMap *ordered.MapStringInt) {
+func ProcessText(text string, orderedMap ordered.PairContainer) {
 	tokens := FilterTokens(Tokenize(text), 4)
 	for _, token := range tokens {
 		if token != "" {
-			present, _ := orderedMap.KeyPresent(token)
+			present := orderedMap.KeyPresent(token)
 			if present {
 				orderedMap.Put(token, orderedMap.Get(token)+1)
 			} else {

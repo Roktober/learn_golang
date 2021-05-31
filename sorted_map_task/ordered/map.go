@@ -1,5 +1,11 @@
 package ordered
 
+type PairContainer interface {
+	Put(string, int)
+	Get(string) int
+	KeyPresent(key string) bool
+}
+
 type MapItemStringInt struct {
 	Key   string
 	Value int
@@ -13,8 +19,8 @@ type MapStringInt struct {
 }
 
 func (i *MapStringInt) Put(key string, value int) {
-	keyPresent, index := i.KeyPresent(key)
-
+	keyPresent := i.KeyPresent(key)
+	index := i.getIndexByValue(key)
 	if keyPresent {
 		i.Bucket[index].Value = value
 	} else {
@@ -31,13 +37,22 @@ func (i *MapStringInt) Get(key string) int {
 	return i.Bucket[index].Value
 }
 
-func (i *MapStringInt) KeyPresent(key string) (bool, int) {
+func (i *MapStringInt) KeyPresent(key string) bool {
 	index := calculateHashString(key) % i.Cap
 	el := i.Bucket[index]
 	if el != nil {
-		return true, index
+		return true
 	}
-	return false, index
+	return false
+}
+
+func (i *MapStringInt) getIndexByValue(key string) int {
+	index := calculateHashString(key) % i.Cap
+	el := i.Bucket[index]
+	if el != nil {
+		return index
+	}
+	return index
 }
 
 func calculateHashString(key string) int {
