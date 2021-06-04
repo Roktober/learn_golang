@@ -14,9 +14,8 @@ func (m *OrderedMap) Len() int {
 }
 
 func (m *OrderedMap) Put(key string, value int) {
-	if !m.KeyPresent(key) {
+	if !m.KeyExist(key) {
 		m.appendToOrderedSlice(key)
-		m.expandOrderedSlice()
 	}
 	m.internalMap[key] = value
 }
@@ -25,23 +24,13 @@ func (m *OrderedMap) Get(key string) int {
 	return m.internalMap[key]
 }
 
-func (m *OrderedMap) KeyPresent(key string) bool {
-	_, keyPresent := m.internalMap[key]
-	return keyPresent
+func (m *OrderedMap) KeyExist(key string) bool {
+	_, ok := m.internalMap[key]
+	return ok
 }
 
 func (m *OrderedMap) appendToOrderedSlice(key string) {
 	m.OrderedItems = append(m.OrderedItems, key)
-}
-
-func (m *OrderedMap) expandOrderedSlice() {
-	if float32(len(m.OrderedItems))/float32(cap(m.OrderedItems)) <= 0.75 {
-		return
-	}
-	newSlice := make([]string, len(m.OrderedItems), len(m.OrderedItems)*3/2)
-	copy(newSlice, m.OrderedItems)
-
-	m.OrderedItems = newSlice
 }
 
 func NewOrderedMap(cap int) *OrderedMap {

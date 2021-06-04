@@ -8,18 +8,13 @@ import (
 	"strings"
 )
 
-func Tokenize(text string) []string {
-	re, err := regexp.Compile(`[^\w' ]`)
-	if err != nil {
-		panic(err)
-	}
+func Tokenize(text string, re *regexp.Regexp) []string {
 	text = re.ReplaceAllString(text, "")
 	tokens := strings.Split(text, " ")
 
 	result := make([]string, len(tokens))
 	i := 0
 	for _, token := range tokens {
-		token = strings.Trim(token, "'")
 		if token != "" {
 			result[i] = token
 			i++
@@ -28,11 +23,14 @@ func Tokenize(text string) []string {
 	return result[:i]
 }
 
-func FilterTokens(tokens []string, minSymbolCount int) []string {
+func FilterTokens(tokens []string, minSymbolCount int, ignore map[string]int) []string {
 	if len(tokens) >= 0 && len(tokens) <= 2 {
 		return []string{""}
 	}
-	tokens = tokens[1 : len(tokens)-1] // Пропуск первого и последнего токена в предложении
+
+	ignore[tokens[0]] = 0
+	ignore[tokens[len(tokens)-1]] = 0
+
 	for i, token := range tokens {
 		if len(token) < minSymbolCount {
 			tokens[i] = ""
@@ -55,11 +53,11 @@ func FilterEmptyToken(tokens []string) []string {
 	return result[:i]
 }
 
-func ProcessText(text string, orderedMap ordered.PairContainer) {
-	tokens := FilterTokens(Tokenize(text), 4)
+func ProcessText(text string, orderedMap ordered.PairContainer, re *regexp.Regexp, ignore map[string]int) {
+	tokens := FilterTokens(Tokenize(text, re), 4, ignore)
 	for _, token := range tokens {
 		if token != "" {
-			present := orderedMap.KeyPresent(token)
+			present := orderedMap.KeyExist(token)
 			if present {
 				orderedMap.Put(token, orderedMap.Get(token)+1)
 			} else {
@@ -98,10 +96,13 @@ func TopWordsByUsage(orderedMap *ordered.MapStringInt, count int) []ordered.MapI
 	return topValues
 }
 
-func TopWordsByUsagePairList(orderedMap *vanil.OrderedMap, count int) ordered.PairList {
+func TopWordsByUsagePairList(orderedMap *vanil.OrderedMap, count int, ignore map[string]int) ordered.PairList {
 	sorted := make(ordered.PairList, orderedMap.Len())
 	for i, v := range orderedMap.OrderedItems {
-		sorted[i] = ordered.MapItemStringInt{Key: v, Value: orderedMap.Get(v)}
+		_, ok := ignore[v]
+		if !ok {
+			sorted[i] = ordered.MapItemStringInt{Key: v, Value: orderedMap.Get(v)}
+		}
 	}
 	sort.Sort(sorted)
 	return sorted[orderedMap.Len()-count:]

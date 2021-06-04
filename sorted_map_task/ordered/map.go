@@ -3,7 +3,7 @@ package ordered
 type PairContainer interface {
 	Put(string, int)
 	Get(string) int
-	KeyPresent(key string) bool
+	KeyExist(key string) bool
 }
 
 type PairList []MapItemStringInt
@@ -25,7 +25,7 @@ type MapStringInt struct {
 }
 
 func (i *MapStringInt) Put(key string, value int) {
-	keyPresent := i.KeyPresent(key)
+	keyPresent := i.KeyExist(key)
 	index := i.getIndexByValue(key)
 	if keyPresent {
 		i.Bucket[index].Value = value
@@ -43,7 +43,7 @@ func (i *MapStringInt) Get(key string) int {
 	return i.Bucket[index].Value
 }
 
-func (i *MapStringInt) KeyPresent(key string) bool {
+func (i *MapStringInt) KeyExist(key string) bool {
 	index := calculateHashString(key) % i.Cap
 	el := i.Bucket[index]
 	if el != nil {

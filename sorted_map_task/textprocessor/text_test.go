@@ -3,6 +3,7 @@ package textprocessor_test
 import (
 	"log"
 	"os"
+	"regexp"
 	"sorted_map_task/ordered"
 	"sorted_map_task/ordered/vanil"
 	"sorted_map_task/reader"
@@ -10,10 +11,12 @@ import (
 	"testing"
 )
 
+var re = regexp.MustCompile(`[^\w ]`)
+
 func GenericBenchmarkProcessText_small_text(b *testing.B, create func() ordered.PairContainer) {
 	for n := 0; n < b.N; n++ {
 		orderedMap := create()
-		textprocessor.ProcessText("dawdawd dawdaw 1-id dwdawd dawdawdwa", orderedMap)
+		textprocessor.ProcessText("dawdawd dawdaw 1-id dwdawd dawdawdwa", orderedMap, re, map[string]int{})
 	}
 }
 
@@ -36,14 +39,14 @@ func GenericBenchmarkProcessText_large_text(b *testing.B, create func() ordered.
 		b.StartTimer()
 		for scanner.Scan() {
 			text := scanner.Text()
-			textprocessor.ProcessText(text, orderedMap)
+			textprocessor.ProcessText(text, orderedMap, re, map[string]int{})
 		}
 	}
 }
 
 func BenchmarkTopWordsByUsage_100(b *testing.B) {
 	orderedMap := ordered.NewOrderedMap(10)
-	textprocessor.ProcessText("aaa, bbbb, cccccccc, kkkkk, ddddddd, dddddd, ddadad", orderedMap)
+	textprocessor.ProcessText("aaa, bbbb, cccccccc, kkkkk, ddddddd, dddddd, ddadad", orderedMap, re, map[string]int{})
 	for n := 0; n < b.N; n++ {
 		textprocessor.TopWordsByUsage(orderedMap, 3)
 	}
@@ -65,7 +68,7 @@ func BenchmarkTopWordsByUsage_200(b *testing.B) {
 	scanner := reader.CreateBufferedScanner(file, 1000000, reader.ScanLinesByDotNewLine)
 	for scanner.Scan() {
 		text := scanner.Text()
-		textprocessor.ProcessText(text, orderedMap)
+		textprocessor.ProcessText(text, orderedMap, re, map[string]int{})
 	}
 
 	for n := 0; n < b.N; n++ {
